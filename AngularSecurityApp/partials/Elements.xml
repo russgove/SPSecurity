@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="partials"
+                OnQuickLaunch="TRUE"
+                TemplateType="851"
+                FeatureId="4bcccd62-dcaf-46dc-a7d4-e38277ef33f4"
+                Url="Lists/partials"
+                Description="My List Instance">
+  </ListInstance>
+</Elements>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="PartialsModule" Url="Lists/partials">
+    <File Path="PartialsModule\home.html" Url="home.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\roledefinitions.html" Url="roledefinitions.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\siteusers.html" Url="siteusers.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\sitegroups.html" Url="sitegroups.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\webroleAssignments.html" Url="webroleAssignments.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\listroleAssignments.html" Url="listroleAssignments.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\listSecurity.html" Url="listSecurity.html" ReplaceContent="TRUE" />
+    <File Path="PartialsModule\ListMenu.html" Url="ListMenu.html" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

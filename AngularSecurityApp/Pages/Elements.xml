@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Pages">
+    <File Path="Pages\Default.aspx" Url="Pages/Default.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\UISelectDemo.aspx" Url="Pages/UISelectDemo.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\SecurityReportClientWebPart.aspx" Url="Pages/SecurityReportClientWebPart.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\ClientWebPart1.aspx" Url="Pages/ClientWebPart1.aspx" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

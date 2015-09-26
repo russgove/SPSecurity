@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Scripts">
+    <File Path="Scripts\App.js" Url="Scripts/App.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular-ui-router.js" Url="Scripts/angular-ui-router.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular.js" Url="Scripts/angular.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Services\spSecurityService.js" Url="Scripts/Services/spSecurityService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\siteUsersController.js" Url="Scripts/Controllers/siteUsersController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\sitegroupsController.js" Url="Scripts/Controllers/sitegroupsController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\roledefinitionsController.js" Url="Scripts/Controllers/roledefinitionsController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.woff" Url="Scripts/UIGrid/ui-grid.woff" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.css" Url="Scripts/UIGrid/ui-grid.css" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.eot" Url="Scripts/UIGrid/ui-grid.eot" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.js" Url="Scripts/UIGrid/ui-grid.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.min.css" Url="Scripts/UIGrid/ui-grid.min.css" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.min.js" Url="Scripts/UIGrid/ui-grid.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.svg" Url="Scripts/UIGrid/ui-grid.svg" ReplaceContent="TRUE" />
+    <File Path="Scripts\UIGrid\ui-grid.ttf" Url="Scripts/UIGrid/ui-grid.ttf" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\webroleassignmentsController.js" Url="Scripts/Controllers/webroleassignmentsController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\listroleassignmentsController.js" Url="Scripts/Controllers/listroleassignmentsController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lodash.js" Url="Scripts/lodash.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\Controllers\listSecurityController.js" Url="Scripts/Controllers/listSecurityController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select.css" Url="Scripts/UI-Select/select.css" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select.js" Url="Scripts/UI-Select/select.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select.min.css" Url="Scripts/UI-Select/select.min.css" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select.min.js" Url="Scripts/UI-Select/select.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular-sanitize.min.js" Url="Scripts/angular-sanitize.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular-sanitize.js" Url="Scripts/angular-sanitize.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select2.css" Url="Scripts/UI-Select/select2.css" ReplaceContent="TRUE" />
+    <File Path="Scripts\UI-Select\select2.png" Url="Scripts/UI-Select/select2.png" ReplaceContent="TRUE" />
+    <File Path="Scripts\ngContextMenu.js" Url="Scripts/ngContextMenu.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\ng-ContextMenu.js" Url="Scripts/ng-ContextMenu.js" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

@@ -1,0 +1,54 @@
+﻿    /* Place custom styles below */
+    .spsec-navbar {
+        background-color: rgba(0, 114, 198, 1);
+        height:30px;
+    }
+    .spsec-navbarlink {
+        vertical-align:central;
+        display:inline;
+        padding-left:1em;
+       background-color: rgba(0, 114, 198, 1);
+       border:0px;
+        height:30px;
+  
+    }
+    a, .navbarlink{
+
+        color:white;
+    }
+    div.ui-grid-header-cell{top:65px}
+    div.rotate {
+      /* Something you can count on */
+
+      white-space: nowrap;
+     /*padding: 5px;*/
+     text-align:left;
+      /*-moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      white-space: nowrap;
+      -ms-text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;*/
+      /*text-overflow: ellipsis;
+      overflow: hidden;*/
+ 
+    }
+
+
+    div.rotate  {
+      transform: 
+        /* Magic Numbers */
+        translate(25px, 51px)
+        /* 45 is really 360 - 45 */
+        rotate(315deg);
+      width: 30px;
+      outline-offset:0;
+    }
+    th.rotate > div > span {
+      border-bottom: 1px solid #ccc;
+      padding: 5px 10px;
+    }
+    div.ui-grid-header {
+        height:140px;
+        text-align:left;
+    }

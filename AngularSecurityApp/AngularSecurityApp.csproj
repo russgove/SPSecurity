@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{898DA3A0-D82D-4E74-B764-BECB8F5BCBD5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AngularSecurityApp</RootNamespace>
+    <AssemblyName>AngularSecurityApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+    <ProjectMode>SharePointApp</ProjectMode>
+    <AppFeaturePartId>{fc8611b3-2c71-4e3a-908c-41ef0ad3c8fe}</AppFeaturePartId>
+    <WspPartId>{0ef9d012-1169-4217-a46f-36da1030f2e2}</WspPartId>
+    <WorkflowPartId>{5cf495db-fe68-4c6a-9525-23ed7765260a}</WorkflowPartId>
+    <CspkgPartId>{eca1af15-fec0-47bc-a9ed-16f00c9e646e}</CspkgPartId>
+    <SqlPackagePartId>{aeca6309-0089-4966-9109-9385dd16bcea}</SqlPackagePartId>
+    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="ClientWebPart1\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <Content Include="Pages\ClientWebPart1.aspx" />
+    <Content Include="Pages\SecurityReportClientWebPart.aspx" />
+    <Content Include="SecurityReportClientWebPart\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <None Include="ClientWebPart1\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e49cc1e7-7233-4596-a3ae-3b0a8935e745}</SharePointProjectItemId>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Pages\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{68f40c7c-405b-4771-81f0-536c8fab3399}</SharePointProjectItemId>
+    </None>
+    <Content Include="Elements.xml" />
+    <Content Include="Images\clip_image001_thumb.png" />
+    <Content Include="Pages\UISelectDemo.aspx" />
+    <Content Include="Pages\Elements.xml" />
+    <Content Include="Pages\Default.aspx" />
+    <None Include="PartialsModule\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b2ab018b-4cd4-4083-b004-f1adc8c193d0}</SharePointProjectItemId>
+    </None>
+    <None Include="partials\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7c72bfbd-e2ad-4909-b2ff-6586d2322463}</SharePointProjectItemId>
+    </None>
+    <None Include="Scripts\UIGrid\ui-grid.eot" />
+    <None Include="Scripts\UIGrid\ui-grid.ttf" />
+    <None Include="Scripts\UIGrid\ui-grid.woff" />
+    <None Include="SecurityReportClientWebPart\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0a9096a0-321c-410a-804c-495fd30f8263}</SharePointProjectItemId>
+    </None>
+    <None Include="SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{74c8d423-9693-49b8-ba73-b5237745c8ae}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{aeca6309-0089-4966-9109-9385dd16bcea}</SharePointProjectItemId>
+    </None>
+    <Content Include="PartialsModule\Elements.xml" />
+    <Content Include="PartialsModule\ListMenu.html" />
+    <Content Include="PartialsModule\listroleAssignments.html" />
+    <Content Include="PartialsModule\listSecurity.html" />
+    <Content Include="PartialsModule\webroleAssignments.html" />
+    <Content Include="PartialsModule\sitegroups.html" />
+    <Content Include="PartialsModule\home.html" />
+    <Content Include="PartialsModule\roledefinitions.html" />
+    <Content Include="PartialsModule\siteusers.html" />
+    <Content Include="partials\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-ui-router.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\Controllers\listroleassignmentsController.js" />
+    <Content Include="Scripts\Controllers\listSecurityController.js" />
+    <Content Include="Scripts\Controllers\webroleassignmentsController.js" />
+    <Content Include="Scripts\Controllers\roledefinitionsController.js" />
+    <Content Include="Scripts\Controllers\sitegroupsController.js" />
+    <Content Include="Scripts\Controllers\siteUsersController.js" />
+    <Content Include="Scripts\Elements.xml" />
+    <Content Include="Scripts\App.js" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\ng-ContextMenu.js" />
+    <Content Include="Scripts\ngContextMenu.js" />
+    <Content Include="Scripts\Services\spSecurityService.js" />
+    <Content Include="Scripts\UI-Select\select.css" />
+    <Content Include="Scripts\UI-Select\select.js" />
+    <Content Include="Scripts\UI-Select\select.min.css" />
+    <Content Include="Scripts\UI-Select\select.min.js" />
+    <Content Include="Scripts\UI-Select\select2.css" />
+    <Content Include="Scripts\UI-Select\select2.png" />
+    <Content Include="Scripts\UIGrid\ui-grid.css" />
+    <Content Include="Scripts\UIGrid\ui-grid.js" />
+    <Content Include="Scripts\UIGrid\ui-grid.min.css" />
+    <Content Include="Scripts\UIGrid\ui-grid.min.js" />
+    <Content Include="Scripts\UIGrid\ui-grid.svg" />
+    <Content Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{244e05ce-3d3f-44c7-883f-003855fbf5d8}</SharePointProjectItemId>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Content\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\App.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="Images\Elements.xml" />
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{168252d2-0a3f-4b53-b2d1-3df39a48dcf1}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Package\Package.package">
+      <PackageId>{48b3d552-1ecc-419d-85fd-335f7d8c9f76}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{4893886c-df63-4c0c-9b3e-1c6c8d5bc66e}</FeatureId>
+    </None>
+    <None Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppManifestFile Include="AppManifest.xml">
+      <SubType>Designer</SubType>
+    </AppManifestFile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0'">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

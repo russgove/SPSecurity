@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Scripts\" Type="ElementManifest" />
+    <ProjectItemFile Source="App.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular-ui-router.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Services\spSecurityService.js" Target="Scripts\Services\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\siteUsersController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\sitegroupsController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\roledefinitionsController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.woff" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.css" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.eot" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.js" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.min.css" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.min.js" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.svg" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="UIGrid\ui-grid.ttf" Target="Scripts\UIGrid\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\webroleassignmentsController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\listroleassignmentsController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="lodash.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Controllers\listSecurityController.js" Target="Scripts\Controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select.css" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select.js" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select.min.css" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select.min.js" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="angular-sanitize.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular-sanitize.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select2.css" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="UI-Select\select2.png" Target="Scripts\UI-Select\" Type="ElementFile" />
+    <ProjectItemFile Source="ngContextMenu.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="ng-ContextMenu.js" Target="Scripts\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

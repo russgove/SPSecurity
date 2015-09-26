@@ -1,0 +1,40 @@
+﻿<div>
+    <span>
+        Show Hidden Lists
+        <input type="checkbox" ng-model="showHiddenLists" ng-change="loadLists()" />
+    </span>
+    <span>
+        Show Lists
+        <ui-select multiple ng-model="lists.selected" theme="select2" ng-disabled="disabled" style="min-width:350px" ng-change="loadLists()">
+            <ui-select-match placeholder="Select lists..." />
+            {{$item.Title}}</ui-select-match>
+            <ui-select-choices repeat="list.Id as list in lists | filter: $select.search">
+                <div ng-bind-html="list.Title | highlight: $select.search"></div>
+                <small ng-bind-html="lists.Id | highlight: $select.search"></small>
+            </ui-select-choices>
+
+        </ui-select>
+
+    </span>
+    <span>
+        Show Permissions
+        <select ng-model="selectedBasePermission" ng-options="code for (code, name)  in basePermissions" ng-change="loadLists()"></select>
+    </span>
+    <span>
+        Show Users
+        <ui-select multiple ng-model="users.selected" theme="select2" ng-disabled="disabled" style="min-width:350px" ng-change="loadLists()">
+            <ui-select-match placeholder=" select users..."  />
+            {{$item.Title}}</ui-select-match>
+            <ui-select-choices repeat="user.Id as user in siteUsers | filter: $select.search">
+                <div ng-bind-html="user.Title | highlight: $select.search"></div>
+                <small ng-bind-html="user.Email | highlight: $select.search"></small>
+            </ui-select-choices>
+
+        </ui-select>
+
+
+    </span>
+
+</div>
+<div ui-grid="gridOptions" ui-grid-pinning ui-grid-expandable class="myGrid"></div>
+ 

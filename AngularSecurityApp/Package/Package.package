@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="48b3d552-1ecc-419d-85fd-335f7d8c9f76" 
+        solutionId="48b3d552-1ecc-419d-85fd-335f7d8c9f76" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="AngularSecurityApp"
+        sharePointProductVersion="15.0">
+  <features>
+        <featureReference itemId="4893886c-df63-4c0c-9b3e-1c6c8d5bc66e" />
+  </features>
+</package>

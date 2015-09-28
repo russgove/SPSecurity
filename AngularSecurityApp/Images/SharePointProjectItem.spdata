@@ -6,5 +6,6 @@
     <ProjectItemFile Source="clip_image001_thumb.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="SPSec.PNG" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="SPSec 2.PNG" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="SPSec 2 - Copy.PNG" Target="Images\" Type="ElementFile" />
   </Files>
 </ProjectItem>

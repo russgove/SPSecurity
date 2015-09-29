@@ -46,7 +46,6 @@
     <Content Include="ClientWebPart1\Elements.xml">
       <OpcRelationship>feature-elementmanifest</OpcRelationship>
     </Content>
-    <Content Include="Images\SPSec 2.PNG" />
     <Content Include="Images\SPSec.PNG" />
     <Content Include="Pages\ClientWebPart1.aspx" />
     <Content Include="Pages\SecurityReportClientWebPart.aspx" />

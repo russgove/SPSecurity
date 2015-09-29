@@ -7,10 +7,7 @@ function () {
     spSecurity.provider('spSecurity', function UnicornLauncherProvider() {
 
         this.$get = ["$http", "$q", "$log", "$filter", function unicornLauncherFactory($http, $q, $log, $filter) {
-
-            // let's assume that the UnicornLauncher constructor was also changed to
-            // accept and use the useTinfoilShielding argument
-            return new SPSecurity($http, $q, $log, $filter);
+         return new SPSecurity($http, $q, $log, $filter);
         }];
     });
     function SPSecurity($http, $q, $log, $filter, hostWebUrl, appWebUrl, requestDigest) {
@@ -25,7 +22,6 @@ function () {
             $q.all([userLoaded, listsLoaded, roleDefsLoaded, siteGroupsLoaded]).then(function (promises) {
                 var selectedLists = [];
                 var users = promises[0];
-                //var lists = _.copy(promises[1]);
                 var lists = $filter('filter')(promises[1], { Hidden: showHiddenLists })
                 var roles = promises[2];
                 var siteGroups = promises[3];
@@ -34,7 +30,7 @@ function () {
                 for (var listIdx = 0; listIdx < lists.length; listIdx++) {
                     var list = lists[listIdx];
                     var listSelected = false;
-                    if (requestedListIds && requestedListIds.length > 0) {// should do this onec upffront
+                    if (requestedListIds && requestedListIds.length > 0) {// should do this once upffront
                         for (var requestedListIdIdx = 0; requestedListIdIdx < requestedListIds.length; requestedListIdIdx++) {
                             if (list.Id == requestedListIds[requestedListIdIdx]) {
                                 listSelected = true;
@@ -51,7 +47,7 @@ function () {
                         for (var usersIdx = 0; usersIdx < users.length; usersIdx++) {
                             var user = users[usersIdx];
                             var userSelected = false;
-                            if (requestedUserIds && requestedUserIds.length > 0) {// should do this onec upffront
+                            if (requestedUserIds && requestedUserIds.length > 0) {// should do this once upffront
                                 for (var requestedUserIdIdx = 0; requestedUserIdIdx < requestedUserIds.length; requestedUserIdIdx++) {
                                     if (user.Id == requestedUserIds[requestedUserIdIdx]) {
                                         userSelected = true;
@@ -75,7 +71,7 @@ function () {
             return listSecurityLoaded.promise;
         };
 
-        // self. hostWebUrl, appWebUrl, requestDigest;
+        
         self.setHostWebUrl = function (url) {
             self.hostWebUrl = url;
         };
@@ -425,7 +421,6 @@ function () {
                                 UserId: {} // external user
                             };
                             if (roleAssignmentObject.Member.UserId) {
-                              //Fixist
                               roleAssignment.UserId = roleAssignmentObject.Member.UserId;
                             }
                             if (roleAssignmentObject.Member.Users) {
@@ -650,6 +645,11 @@ function () {
         };
 
 
+      /// <summary>Gets the BasePermissions that a given user has on a given SecurableObject</summary>
+      /// <param name="securableObject" type="Number">The theSPSecurableObject</param>
+      /// <param name="user" type="Number">The SPUser</param>
+
+      /// <returns type="Number">The area.</returns>
 
         self.getUserPermissionsPromise = function (securableObject, user) {
             var userPermissionsDeferred = $q.defer();
@@ -782,6 +782,9 @@ function () {
         };
 
 
+      /// <summary>Gets all the base permissions that are included in a set of RoleDefinitions </summary>
+      /// <param name="roleDefs" type="RoleDef">The List of RoleDefinitions to Extract Base permissions from 
+      /// <returns type="Number">an array of BasePermisions</returns>
 
         self.getBasePermissionsForRoleDefinitiuonIds = function (roleDefinitionIds, roleDefs) {
             var basePermissions = [];

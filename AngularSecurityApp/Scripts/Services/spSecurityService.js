@@ -1,84 +1,97 @@
-﻿
-(
-function () {
+﻿(
+function ()
+{
     "use strict";
-
-    var spSecurity = angular.module("spSecurity", [])
-    spSecurity.provider('spSecurity', function UnicornLauncherProvider() {
-
-        this.$get = ["$http", "$q", "$log", "$filter", function unicornLauncherFactory($http, $q, $log, $filter) {
-         return new SPSecurity($http, $q, $log, $filter);
+    var spSecurity = angular.module( "spSecurity", [] )
+    spSecurity.provider( 'spSecurity', function UnicornLauncherProvider()
+    {
+        this.$get = ["$http", "$q", "$log", "$filter", function unicornLauncherFactory( $http, $q, $log, $filter )
+        {
+            return new SPSecurity( $http, $q, $log, $filter );
         }];
-    });
-    function SPSecurity($http, $q, $log, $filter, hostWebUrl, appWebUrl, requestDigest) {
+    } );
+    function SPSecurity( $http, $q, $log, $filter, hostWebUrl, appWebUrl, requestDigest )
+    {
         var self = this;
-        self.GetListSecurity = function (showHiddenLists, basePermission, requestedUserIds, requestedListIds) {
+        self.GetListSecurity = function ( showHiddenLists, basePermission, requestedUserIds, requestedListIds )
+        {
             var listSecurityLoaded = $q.defer();
             var listsLoaded = this.loadListRoleAssigmentsDefinitionsMembers();
             var roleDefsLoaded = this.loadWebRoleDefinitions();
             var userLoaded = this.loadSiteUsers();
             var siteGroupsLoaded = this.loadSiteGroups();
-
-            $q.all([userLoaded, listsLoaded, roleDefsLoaded, siteGroupsLoaded]).then(function (promises) {
+            $q.all( [userLoaded, listsLoaded, roleDefsLoaded, siteGroupsLoaded] ).then( function ( promises )
+            {
                 var selectedLists = [];
                 var users = promises[0];
-                var lists = $filter('filter')(promises[1], { Hidden: showHiddenLists })
+                var lists = $filter( 'filter' )( promises[1], { Hidden: showHiddenLists } )
                 var roles = promises[2];
                 var siteGroups = promises[3];
                 // forachh list, foreachuser, see if the user has security
                 //angular.forEach(lists, function (list) {
-                for (var listIdx = 0; listIdx < lists.length; listIdx++) {
+                for ( var listIdx = 0; listIdx < lists.length; listIdx++ )
+                {
                     var list = lists[listIdx];
                     var listSelected = false;
-                    if (requestedListIds && requestedListIds.length > 0) {// should do this once upffront
-                        for (var requestedListIdIdx = 0; requestedListIdIdx < requestedListIds.length; requestedListIdIdx++) {
-                            if (list.Id == requestedListIds[requestedListIdIdx]) {
+                    if ( requestedListIds && requestedListIds.length > 0 )
+                    {// should do this once upffront
+                        for ( var requestedListIdIdx = 0; requestedListIdIdx < requestedListIds.length; requestedListIdIdx++ )
+                        {
+                            if ( list.Id == requestedListIds[requestedListIdIdx] )
+                            {
                                 listSelected = true;
                                 break;
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         listSelected = true;
                     }
-                    if (listSelected) {
+                    if ( listSelected )
+                    {
                         list.users = [];
-                        selectedLists.push(list);
-                        for (var usersIdx = 0; usersIdx < users.length; usersIdx++) {
+                        selectedLists.push( list );
+                        for ( var usersIdx = 0; usersIdx < users.length; usersIdx++ )
+                        {
                             var user = users[usersIdx];
                             var userSelected = false;
-                            if (requestedUserIds && requestedUserIds.length > 0) {// should do this once upffront
-                                for (var requestedUserIdIdx = 0; requestedUserIdIdx < requestedUserIds.length; requestedUserIdIdx++) {
-                                    if (user.Id == requestedUserIds[requestedUserIdIdx]) {
+                            if ( requestedUserIds && requestedUserIds.length > 0 )
+                            {// should do this once upffront
+                                for ( var requestedUserIdIdx = 0; requestedUserIdIdx < requestedUserIds.length; requestedUserIdIdx++ )
+                                {
+                                    if ( user.Id == requestedUserIds[requestedUserIdIdx] )
+                                    {
                                         userSelected = true;
                                         break;
                                     }
                                 }
                             }
-                            else {
+                            else
+                            {
                                 userSelected = true;
                             }
-                            if (userSelected) {
-                                list.users[user.Title] = self.doesUserHavePermission(list, user, basePermission, roles, siteGroups);
+                            if ( userSelected )
+                            {
+                                list.users[user.Title] = self.doesUserHavePermission( list, user, basePermission, roles, siteGroups );
                             }
                         };
-
                     };
-                    
                 };
-                listSecurityLoaded.resolve(selectedLists);
-            });
+                listSecurityLoaded.resolve( selectedLists );
+            } );
             return listSecurityLoaded.promise;
         };
-
-        
-        self.setHostWebUrl = function (url) {
+        self.setHostWebUrl = function ( url )
+        {
             self.hostWebUrl = url;
         };
-        self.setAppWebUrl = function (url) {
+        self.setAppWebUrl = function ( url )
+        {
             self.appWebUrl = url;
         };
-        self.setRequestDigest = function (rd) {
+        self.setRequestDigest = function ( rd )
+        {
             self.requestDigest = rd;
         };
         self.principalTypes = {
@@ -88,7 +101,6 @@ function () {
             securityGroup: 4,
             sharePointGroup: 8,
             all: 15
-
         }
         self.basePermissions = {
             ViewListItems: {
@@ -163,7 +175,6 @@ function () {
                 description: "View forms, views, and application pages, and enumerate lists.",
                 type: "List"
             },
-
 
             Open: {
                 high: 0x00000000,
@@ -298,510 +309,556 @@ function () {
                 type: "Special"
             }
         };
-
-        self.getHostApiUrl = function (url) {
+        self.getHostApiUrl = function ( url )
+        {
             var newUrl = self.appWebUrl + "/_api/SP.AppContextSite(@target)/" + url;
-            if (newUrl.indexOf('?') > 0) {
+            if ( newUrl.indexOf( '?' ) > 0 )
+            {
                 newUrl = newUrl + "&@target='" + self.hostWebUrl + "'";
-            } else {
+            } else
+            {
                 newUrl = newUrl + "?@target='" + self.hostWebUrl + "'";
             }
             return newUrl;
         };
-        self.loadSiteGroups = function (forceReload) {
+        self.loadSiteGroups = function ( forceReload )
+        {
             // the respomse from sharepoint contains header Cache-Control: private, max-age=0
-            if (self.siteGroupsLoaded && !forceReload) return self.siteGroupsLoaded.promise;
-            var url = this.getHostApiUrl('Web/SiteGroups?$expand=Users');
+            if ( self.siteGroupsLoaded && !forceReload ) return self.siteGroupsLoaded.promise;
+            //var url = this.getHostApiUrl('Web/SiteGroups?$expand=Users'); tuning query
+            var url = this.getHostApiUrl( 'Web/SiteGroups?$expand=Users&$select=Id,IsHiddenInUI,IsShareByEmailGuestUser,IsSiteAdmin,IsSiteAdmin,PrincipalType,PrincipalType' );
             self.siteGroupsLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-               .success(function (data) {
-                   var tempGroups;
-                   tempGroups = [];
-                   angular.forEach(data.d.results, function (siteGroup, key) {
-                       var group;
-                       group = {
-                           Title: siteGroup.Title,
-                           Id: siteGroup.Id,
-                           Users: []
-                       };
-                       angular.forEach(siteGroup.Users.results, function (user, key) {
-                           group.Users.push(user.Id);
-                       });
-                       tempGroups.push(group);
-                   });
-                   self.siteGroups = tempGroups;
-                   self.siteGroupsLoaded.resolve(self.siteGroups);
-               })
-               .error(function (jqXHR, textStatus, errorThrown) {
-                   debugger;
-                   self.siteGroupsLoaded.reject(textStatus);
-               });
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                var tempGroups;
+                tempGroups = [];
+                angular.forEach( data.d.results, function ( siteGroup, key )
+                {
+                    var group;
+                    group = {
+                        Title: siteGroup.Title,
+                        Id: siteGroup.Id,
+                        Users: []
+                    };
+                    angular.forEach( siteGroup.Users.results, function ( user, key )
+                    {
+                        group.Users.push( user.Id );
+                    } );
+                    tempGroups.push( group );
+                } );
+                self.siteGroups = tempGroups;
+                self.siteGroupsLoaded.resolve( self.siteGroups );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.siteGroupsLoaded.reject( textStatus );
+            } );
             return self.siteGroupsLoaded.promise;
-
         };
-        self.loadSiteUsers = function (forceReload) {
-            if (self.siteUsersLoaded && !forceReload) return self.siteUsersLoaded.promise;
-
-            var url = this.getHostApiUrl('Web/SiteUsers');
+        self.loadSiteUsers = function ( forceReload )
+        {
+            if ( self.siteUsersLoaded && !forceReload ) return self.siteUsersLoaded.promise;
+            var url = this.getHostApiUrl( 'Web/SiteUsers' );
             self.siteUsersLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-                .success(function (data) {
-                    self.siteUsers = data.d.results;
-                    self.siteUsersLoaded.resolve(self.siteUsers);
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    debugger;
-                    self.siteUsersLoaded.reject(textStatus);
-                });
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                self.siteUsers = data.d.results;
+                self.siteUsersLoaded.resolve( self.siteUsers );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.siteUsersLoaded.reject( textStatus );
+            } );
             return self.siteUsersLoaded.promise;
         };
 
-
-        self.loadWebRoleDefinitions = function (forceReload) {
-            if (self.roleDefinitionsLoaded && !forceReload) return self.roleDefinitionsLoaded.promise;
-
-            var url = this.getHostApiUrl('Web/RoleDefinitions?$expand=BasePermissions');
+        self.loadWebRoleDefinitions = function ( forceReload )
+        {
+            if ( self.roleDefinitionsLoaded && !forceReload ) return self.roleDefinitionsLoaded.promise;
+            var url = this.getHostApiUrl( 'Web/RoleDefinitions?$expand=BasePermissions' );//tune query
+           //  var url = this.getHostApiUrl('Web/RoleDefinitions?$expand=BasePermissions$select=BasePermissions/High,BasePermissions/Lpw,Id');//nfg
             self.roleDefinitionsLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-                .success(function (data) {
-                    self.roleDefinitions = data.d.results;
-                    self.roleDefinitionsLoaded.resolve(data.d.results);
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    debugger;
-                    self.roleDefinitionsLoaded.reject(textStatus);
-                });
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                self.roleDefinitions = data.d.results;
+                self.roleDefinitionsLoaded.resolve( data.d.results );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.roleDefinitionsLoaded.reject( textStatus );
+            } );
             return self.roleDefinitionsLoaded.promise;
-
         };
-        self.loadWebRoleAssigmentsDefinitionsMembers = function (forceReload) {
-            if (self.webroleAssignmentsLoaded && !forceReload) return self.webroleAssignmentsLoaded.promise;
-
-            var url = this.getHostApiUrl('Web?$expand=RoleAssignments,RoleAssignments/Member,RoleAssignments/RoleDefinitionBindings');
-
+        self.loadWebRoleAssigmentsDefinitionsMembers = function ( forceReload )
+        {
+            if ( self.webroleAssignmentsLoaded && !forceReload ) return self.webroleAssignmentsLoaded.promise;
+            //This can be the biigest one, need to really tune
+            //var url = this.getHostApiUrl('Web?$expand=RoleAssignments,RoleAssignments/Member,RoleAssignments/RoleDefinitionBindings');// tuning query
+            var url = this.getHostApiUrl( 'Web?$expand=RoleAssignments,RoleAssignments/Member,RoleAssignments/RoleDefinitionBindings' );
 
             self.webroleAssignmentsLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-                .success(function (data) {
-                    self.webRoleAssignments = data.d.RoleAssignments;
-                    self.webroleAssignmentsLoaded.resolve(data.d.RoleAssignments.results);
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    debugger;
-                    self.webroleAssignmentsLoaded.reject(textStatus);
-                });
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                self.webRoleAssignments = data.d.RoleAssignments;
+                self.webroleAssignmentsLoaded.resolve( data.d.RoleAssignments.results );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.webroleAssignmentsLoaded.reject( textStatus );
+            } );
             return self.webroleAssignmentsLoaded.promise;
         };
-        self.loadListRoleAssigmentsDefinitionsMembers = function (forceReload) {
-            if (self.listroleAssignmentsLoaded && !forceReload) return self.listroleAssignmentsLoaded.promise;
-
+        self.loadListRoleAssigmentsDefinitionsMembers = function ( forceReload )
+        {
+            // ig i already have the list just return it
+            if ( self.listroleAssignmentsLoaded && !forceReload )
+            {
+                return self.listroleAssignmentsLoaded.promise;
+            }
             //var url = this.getHostApiUrl('Web/Lists?$select=Title,Description,Hidden,Id,RoleAssignments/RoleDefinitionBindings/Id,RoleAssignments/Member/Groups/Id,RoleAssignments/Member/Users/Id&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups');
-            var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');
-
+           // var url = this.getHostApiUrl( 'Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId' ); //tune query
+            var url = this.getHostApiUrl( 'Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/UserId&$select=Title,Id,Hidden,RoleAssignments/PrincipalId,RoleAssignments/Member/Id,RoleAssignments/Member/UserIdRoleAssignments/RoleDefinitionBindings/Id' ); // just get ids of Memebrs and role definitionbindings
 
             self.listroleAssignmentsLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-                .success(function (data) {
-                    var tempLists;
-                    tempLists = [];
-                    angular.forEach(data.d.results, function (listObject, key) {
-                        var list;
-                        list = {
-                            Title: listObject.Title,
-                            Id: listObject.Id,
-                            Hidden: listObject.Hidden,
-                            RoleAssignments: []
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                var tempLists;
+                tempLists = [];
+                angular.forEach( data.d.results, function ( listObject, key )
+                {
+                    var list;
+                    list = {
+                        Title: listObject.Title,
+                        Id: listObject.Id,
+                        Hidden: listObject.Hidden,
+                        RoleAssignments: []
+                    };
+                    angular.forEach( listObject.RoleAssignments.results, ( function ( roleAssignmentObject, key )
+                    {
+                        var roleAssignment;
+                        roleAssignment = {
+                            RoleDefinitions: [],
+                            Users: [],
+                            Groups: [],
+                            UserId: {} // external user
                         };
-                        angular.forEach(listObject.RoleAssignments.results, (function (roleAssignmentObject, key) {
-                            var roleAssignment;
-                            roleAssignment = {
-                                RoleDefinitions: [],
-                                Users: [],
-                                Groups: [],
-                                UserId: {} // external user
+                        if ( roleAssignmentObject.Member.UserId )
+                        {
+                            roleAssignment.UserId = roleAssignmentObject.Member.UserId;
+                        }
+                        if ( roleAssignmentObject.Member.Users )
+                        {
+                            angular.forEach( roleAssignmentObject.Member.Users.results, function ( roleAssignmentMemberUser, key )
+                            {
+                                roleAssignment.Users.push( roleAssignmentMemberUser.Id );
+                            } );
+                        }
+                        if ( roleAssignmentObject.Member.Groups )
+                        {
+                            angular.forEach( roleAssignmentObject.Member.Groups.results, function ( roleAssignmentMemberGroup, key )
+                            {
+                                roleAssignment.Groups.push( roleAssignmentMemberGroup.Id );
+                            } );
+                        }
+                        angular.forEach( roleAssignmentObject.RoleDefinitionBindings.results, function ( roleDefinitionBinding, key )
+                        {
+                            var roleDefinition;
+                            roleDefinition = {
+                                Id: roleDefinitionBinding.Id
                             };
-                            if (roleAssignmentObject.Member.UserId) {
-                              roleAssignment.UserId = roleAssignmentObject.Member.UserId;
-                            }
-                            if (roleAssignmentObject.Member.Users) {
-                                angular.forEach(roleAssignmentObject.Member.Users.results, function (roleAssignmentMemberUser, key) {
-                                    roleAssignment.Users.push(roleAssignmentMemberUser.Id);
-                                });
-                            }
-                            if (roleAssignmentObject.Member.Groups) {
-                                angular.forEach(roleAssignmentObject.Member.Groups.results, function (roleAssignmentMemberGroup, key) {
-                                    roleAssignment.Groups.push(roleAssignmentMemberGroup.Id);
-                                });
-                            }
-                            angular.forEach(roleAssignmentObject.RoleDefinitionBindings.results, function (roleDefinitionBinding, key) {
-                                var roleDefinition;
-                                roleDefinition = {
-                                    Id: roleDefinitionBinding.Id
-                                };
-                                roleAssignment.RoleDefinitions.push(roleDefinition);
-                            });
-                            list.RoleAssignments.push(roleAssignment);
-                        }));
-                        tempLists.push(list);
-                    });
-                    self.listSecurity = tempLists;
+                            roleAssignment.RoleDefinitions.push( roleDefinition );
+                        } );
+                        list.RoleAssignments.push( roleAssignment );
+                    } ) );
+                    tempLists.push( list );
+                } );
+                self.listSecurity = tempLists;
 
 
 
-
-                    self.listRoleAssignments = tempLists;
-                    self.listroleAssignmentsLoaded.resolve(tempLists);
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    debugger;
-                    self.listroleAssignmentsLoaded.reject(textStatus);
-                });
+                self.listRoleAssignments = tempLists;
+                self.listroleAssignmentsLoaded.resolve( tempLists );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.listroleAssignmentsLoaded.reject( textStatus );
+            } );
             return self.listroleAssignmentsLoaded.promise;
-
 
 
         };
         // gets all items in a file, with the parentfolder and security info. I cant figure how to filter base on parentfolder!
         //////// https://rgove3.sharepoint.com/_api/Web/Lists(guid'6157faea-d529-4350-a1b5-469e533648c9')/Items?$select=Title,Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments/RoleDefinitionBindings/Id,RoleAssignments/Member/Groups/Id,RoleAssignments/Member/Users/Id&$expand=Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups
-        self.loadListItemRoleAssigmentsDefinitionsMembers = function (listId,forceReload) {
-            var url = this.getHostApiUrl("Web/Lists(guid'"+listId+"')/Items?$select=Title,Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments/RoleDefinitionBindings/Id,RoleAssignments/Member/Groups/Id,RoleAssignments/Member/Users/Id&$expand=Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups");
-
+        self.loadListItemRoleAssigmentsDefinitionsMembers = function ( listId, forceReload )
+        {
+            var url = this.getHostApiUrl( "Web/Lists(guid'" + listId + "')/Items?$select=Title,Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments/RoleDefinitionBindings/Id,RoleAssignments/Member/Groups/Id,RoleAssignments/Member/Users/Id&$expand=Folder/ParentFolder/ServerRelativeUrl,File/ParentFolder/ServerRelativeUrl,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups" );
 
             self.listitemroleAssignmentsLoaded = $q.defer();
-            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
-                .success(function (data) {
-                    var listItems=[];
-                 
-                    angular.forEach(data.d.results, function (listitemObject, key) {
-                        var listItem={
-                            Title: listitemObject.Title,
-                            ParentFoldeServerRelativeUrl: (listitemObject.FileParentFolder) ? listitemObject.FileParentFolder.ServerRelativeUrl : listitemObject.FolderParentFolder.ServerRelativeUrl,
-                            
-                            RoleAssignments: []
+            $http.get( url, { headers: { "Accept": "application/json; odata=verbose" } } )
+            .success( function ( data )
+            {
+                var listItems = [];
+                angular.forEach( data.d.results, function ( listitemObject, key )
+                {
+                    var listItem = {
+                        Title: listitemObject.Title,
+                        ParentFoldeServerRelativeUrl: ( listitemObject.FileParentFolder ) ? listitemObject.FileParentFolder.ServerRelativeUrl : listitemObject.FolderParentFolder.ServerRelativeUrl,
+                        RoleAssignments: []
+                    };
+                    angular.forEach( listitemObject.RoleAssignments.results, ( function ( roleAssignmentObject, key )
+                    {
+                        var roleAssignment;
+                        roleAssignment = {
+                            RoleDefinitions: [],
+                            Users: [],
+                            Groups: []
                         };
-                        angular.forEach(listitemObject.RoleAssignments.results, (function (roleAssignmentObject, key) {
-                            var roleAssignment;
-                            roleAssignment = {
-                                RoleDefinitions: [],
-                                Users: [],
-                                Groups: []
+                        if ( roleAssignmentObject.Member.Users )
+                        {
+                            angular.forEach( roleAssignmentObject.Member.Users.results, function ( roleAssignmentMemberUser, key )
+                            {
+                                roleAssignment.Users.push( roleAssignmentMemberUser.Id );
+                            } );
+                        }
+                        if ( roleAssignmentObject.Member.Groups )
+                        {
+                            angular.forEach( roleAssignmentObject.Member.Groups.results, function ( roleAssignmentMemberGroup, key )
+                            {
+                                roleAssignment.Groups.push( roleAssignmentMemberGroup.Id );
+                            } );
+                        }
+                        angular.forEach( roleAssignmentObject.RoleDefinitionBindings.results, function ( roleDefinitionBinding, key )
+                        {
+                            var roleDefinition;
+                            roleDefinition = {
+                                Id: roleDefinitionBinding.Id
                             };
-                            if (roleAssignmentObject.Member.Users) {
-                                angular.forEach(roleAssignmentObject.Member.Users.results, function (roleAssignmentMemberUser, key) {
-                                    roleAssignment.Users.push(roleAssignmentMemberUser.Id);
-                                });
-                            }
-                            if (roleAssignmentObject.Member.Groups) {
-                                angular.forEach(roleAssignmentObject.Member.Groups.results, function (roleAssignmentMemberGroup, key) {
-                                    roleAssignment.Groups.push(roleAssignmentMemberGroup.Id);
-                                });
-                            }
-                            angular.forEach(roleAssignmentObject.RoleDefinitionBindings.results, function (roleDefinitionBinding, key) {
-                                var roleDefinition;
-                                roleDefinition = {
-                                    Id: roleDefinitionBinding.Id
-                                };
-                                roleAssignment.RoleDefinitions.push(roleDefinition);
-                            });
-                            listItem.RoleAssignments.push(roleAssignment);
-                        }));
-                        listItems.push(listItem);
-                    });
-                    self.listroleAssignmentsLoaded.resolve(listItems);
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    debugger;
-                    self.listitemroleAssignmentsLoaded.reject(textStatus);
-                });
+                            roleAssignment.RoleDefinitions.push( roleDefinition );
+                        } );
+                        listItem.RoleAssignments.push( roleAssignment );
+                    } ) );
+                    listItems.push( listItem );
+                } );
+                self.listroleAssignmentsLoaded.resolve( listItems );
+            } )
+            .error( function ( jqXHR, textStatus, errorThrown )
+            {
+                debugger;
+                self.listitemroleAssignmentsLoaded.reject( textStatus );
+            } );
             return self.listitemroleAssignmentsLoaded.promise;
 
 
-
         };
-        self.getFolderRoleAssigmentsDefinitionsMembers = function (listId, folderServerRelativeUrl, forceReload) {
+        self.getFolderRoleAssigmentsDefinitionsMembers = function ( listId, folderServerRelativeUrl, forceReload )
+        {
             var folderAssignmentsLoaded = $q.defer();
-            return self.loadListItemRoleAssigmentsDefinitionsMembers(listId, forceReload).then(function (data) {
+            return self.loadListItemRoleAssigmentsDefinitionsMembers( listId, forceReload ).then( function ( data )
+            {
                 //loop through each and only select the right folder.
                 // need to figure how to filter on rest call
-            });
+            } );
             return folderAssignmentsLoaded.promise;
-            
-
 
 
         };
-
-        self.loadListNames = function (forceReload) {
+        self.loadListNames = function ( forceReload )
+        {
             var loadListNamesDefered = $q.defer();
-            self.loadListRoleAssigmentsDefinitionsMembers(forceReload).then(function (lists) {
-
-                var listnames = _.map(lists, function (list) {
+            self.loadListRoleAssigmentsDefinitionsMembers( forceReload ).then( function ( lists )
+            {
+                var listnames = _.map( lists, function ( list )
+                {
                     return { Title: list.Title, Id: list.Id };
-                })
-                loadListNamesDefered.resolve(listnames);
+                } )
+                loadListNamesDefered.resolve( listnames );
             },
-            function (error) {
-                alert('error in loadlistnames')
-                loadListNamesDefered.reject(error);
-            });
+            function ( error )
+            {
+                alert( 'error in loadlistnames' )
+                loadListNamesDefered.reject( error );
+            } );
             return loadListNamesDefered.promise;
         }
-
         //self.getRoleDefinitionById = function (roleDefinitionId) {
-        //    var gotRoleDef = $q.defer();
-        //    self.loadWebRoleDefinitions().then(function (roleDefs) {
-        //        angular.forEach(roleDefs, function (roleDef) {
-        //            if (roleDef.Id = roleDefinitionId) {
-        //                gotRoleDef.resolve(roleDef);
-        //            }
-        //        });
-        //        $log.error("A role Definition with ID " + roleDefinitionId + " Was not foundin the Web");
-        //        gotRoleDef.reject();
+        // var gotRoleDef = $q.defer();
+        // self.loadWebRoleDefinitions().then(function (roleDefs) {
+        // angular.forEach(roleDefs, function (roleDef) {
+        // if (roleDef.Id = roleDefinitionId) {
+        // gotRoleDef.resolve(roleDef);
+        // }
+        // });
+        // $log.error("A role Definition with ID " + roleDefinitionId + " Was not foundin the Web");
+        // gotRoleDef.reject();
 
-
-        //    });
-        //    return gotRoleDef.promise;
+        // });
+        // return gotRoleDef.promise;
         //};
-        self.getBasePermissionsForRoleDefinitiuonIdsPromise = function (roleDefinitionIds) {
+        self.getBasePermissionsForRoleDefinitiuonIdsPromise = function ( roleDefinitionIds )
+        {
             var BasePermissionsForRoleDefinitiuonIdsDeferred = $q.defer();
             var basePermissions = [];
-            self.loadWebRoleDefinitions().then(function (roleDefs) {
-                angular.forEach(roleDefs, function (roleDef) {
-
-                    angular.forEach(roleDefinitionIds, function (roleDefinitionId) {
-                        if (roleDef.Id = roleDefinitionId) {
-                            basePermissions.push(roleDef.BasePermissions)
-
+            self.loadWebRoleDefinitions().then( function ( roleDefs )
+            {
+                angular.forEach( roleDefs, function ( roleDef )
+                {
+                    angular.forEach( roleDefinitionIds, function ( roleDefinitionId )
+                    {
+                        if ( roleDef.Id = roleDefinitionId )
+                        {
+                            basePermissions.push( roleDef.BasePermissions )
                         }
-                    });
-                });
-                BasePermissionsForRoleDefinitiuonIdsDeferred.resolve(basePermissions);
-            }, function (error) {
-
-                BasePermissionsForRoleDefinitiuonIdsDeferred.reject(error);
-            });
-
+                    } );
+                } );
+                BasePermissionsForRoleDefinitiuonIdsDeferred.resolve( basePermissions );
+            }, function ( error )
+            {
+                BasePermissionsForRoleDefinitiuonIdsDeferred.reject( error );
+            } );
             return BasePermissionsForRoleDefinitiuonIdsDeferred.promise;
 
-
         };
-
-        self.getUserIsInRole = function (user, roleAssignment) {
+        self.getUserIsInRole = function ( user, roleAssignment )
+        {
             var userInRoleDeferred = $q.defer();
-            angular.forEach(roleAssignment.Users, function (assignedUserId) {
-                if (assignedUserId === user.Id) {
-                    userInRoleDeferred.resolve(true);
+            angular.forEach( roleAssignment.Users, function ( assignedUserId )
+            {
+                if ( assignedUserId === user.Id )
+                {
+                    userInRoleDeferred.resolve( true );
                 }
-            })
+            } )
             //TODO: checj for group membership
             //angular.forEach(roleAssignment.Groups, function (assignedUserId) {
-
-            //    if (assignedUserId === user.Id) {
-            //        return true;
-            //    }
+            // if (assignedUserId === user.Id) {
+            // return true;
+            // }
             //})
-
-            userInRoleDeferred.resolve(false);
+            userInRoleDeferred.resolve( false );
             return userInRoleDeferred.promise;
         };
-        self.GetRoleAssignmentsForUserPromise = function (securableObject, user) {
+        self.GetRoleAssignmentsForUserPromise = function ( securableObject, user )
+        {
             var getRoleAssignmentsDeferred = $q.defer();
-
             self.loadSiteGroups().then(
-                function (groups) {
-                    var selectedRoleAssignments = [];
-                    angular.forEach(securableObject.RoleAssignments, function (roleAssignment) {
-                        angular.forEach(roleAssignment.Users, function (assignedUserId) {
-                            if (assignedUserId === user.Id) {
-                                selectedRoleAssignments.push(roleAssignment)
+            function ( groups )
+            {
+                var selectedRoleAssignments = [];
+                angular.forEach( securableObject.RoleAssignments, function ( roleAssignment )
+                {
+                    angular.forEach( roleAssignment.Users, function ( assignedUserId )
+                    {
+                        if ( assignedUserId === user.Id )
+                        {
+                            selectedRoleAssignments.push( roleAssignment )
+                        }
+                    } );
+                    angular.forEach( groups, function ( group )
+                    {
+                        // if the user is in the group add the assignment
+                        angular.forEach( group.Users, function ( groupUser )
+                        {
+                            if ( groupUser.Id === user.Id )
+                            {
+                                selectedRoleAssignments.push( roleAssignment )
                             }
-                        });
-                        angular.forEach(groups, function (group) {
-                            // if the user is in the group add the assignment
-                            angular.forEach(group.Users, function (groupUser) {
-                                if (groupUser.Id === user.Id) {
-                                    selectedRoleAssignments.push(roleAssignment)
-                                }
-                            });
-                        });
-                        getRoleAssignmentsDeferred.resolve(selectedRoleAssignments);
-                    });
+                        } );
+                    } );
+                    getRoleAssignmentsDeferred.resolve( selectedRoleAssignments );
+                } );
 
-
-                }, function (error) {
-                    getRoleAssignmentsDeferred.reject();
-                });
-
+            }, function ( error )
+            {
+                getRoleAssignmentsDeferred.reject();
+            } );
             //TODO: checj for group membership
             //angular.forEach(roleAssignment.Groups, function (assignedUserId) {
-
-            //    if (assignedUserId === user.Id) {
-            //        return true;
-            //    }
+            // if (assignedUserId === user.Id) {
+            // return true;
+            // }
             //})
-
             return getRoleAssignmentsDeferred.promise;
-
         };
 
-
-      /// <summary>Gets the BasePermissions that a given user has on a given SecurableObject</summary>
-      /// <param name="securableObject" type="Number">The theSPSecurableObject</param>
-      /// <param name="user" type="Number">The SPUser</param>
-
-      /// <returns type="Number">The area.</returns>
-
-        self.getUserPermissionsPromise = function (securableObject, user) {
+        /// <summary>Gets the BasePermissions that a given user has on a given SecurableObject</summary>
+        /// <param name="securableObject" type="Number">The theSPSecurableObject</param>
+        /// <param name="user" type="Number">The SPUser</param>
+        /// <returns type="Number">The area.</returns>
+        self.getUserPermissionsPromise = function ( securableObject, user )
+        {
             var userPermissionsDeferred = $q.defer();
             var roleDefinitionIds = [];// the roleDefinition ID's for all the Assignemnts the user is in
+            self.GetRoleAssignmentsForUserPromise( securableObject, user ).then( function ( roleAssignments )
+            {
+                angular.forEach( roleAssignments, function ( roleAssignment )
+                {
+                    angular.forEach( roleAssignment.RoleDefinitions, function ( roleDefinitionStub )
+                    {
+                        roleDefinitionIds.push( roleDefinitionStub.Id );
+                    } );
+                } );
+                self.getBasePermissionsForRoleDefinitiuonIds( roleDefinitionIds ).then(
+                function ( basePermissions )
+                {
+                    userPermissionsDeferred.resolve( basePermissions );
+                },
+                function ( error )
+                {
+                    userPermissionsDeferred.reject( error );
+                } );
 
-            self.GetRoleAssignmentsForUserPromise(securableObject, user).then(function (roleAssignments) {
-                angular.forEach(roleAssignments, function (roleAssignment) {
-                    angular.forEach(roleAssignment.RoleDefinitions, function (roleDefinitionStub) {
-                        roleDefinitionIds.push(roleDefinitionStub.Id);
-                    });
-                });
-                self.getBasePermissionsForRoleDefinitiuonIds(roleDefinitionIds).then(
-                    function (basePermissions) {
-                        userPermissionsDeferred.resolve(basePermissions);
-                    },
-                    function (error) {
-                        userPermissionsDeferred.reject(error);
-                    });
-
-
-            });
+            } );
             return userPermissionsDeferred.promise;
-
         };
-        self.doesUserHavePermissionPromise = function (securableObject, user, requestedpermission) {
+        self.doesUserHavePermissionPromise = function ( securableObject, user, requestedpermission )
+        {
             var doesUserHavePermissionDefer = $q.defer();
-            self.getUserPermissionsPromise(securableObject, user).then(function (permissions) {
-                angular.forEach(permissions, function (permission) {
+            self.getUserPermissionsPromise( securableObject, user ).then( function ( permissions )
+            {
+                angular.forEach( permissions, function ( permission )
+                {
                     if (
-                        (permission.Low & requestedpermission.Low === requestedpermission.Low)
-                        &&
-                        (permission.High & requestedpermission.High === requestedpermission.High)
-                        ) {
-                        doesUserHavePermissionDefer.resolve(true);
+                    ( permission.Low & requestedpermission.Low === requestedpermission.Low )
+                    &&
+                    ( permission.High & requestedpermission.High === requestedpermission.High )
+                    )
+                    {
+                        doesUserHavePermissionDefer.resolve( true );
                     }
-                    else {
-                        doesUserHavePermissionDefer.resolve(false);
+                    else
+                    {
+                        doesUserHavePermissionDefer.resolve( false );
                     }
-
-                });
-
+                } );
 
 
-            }, function (error) {
-                doesUserHavePermissionDefer.reject(error);
-            });
+            }, function ( error )
+            {
+                doesUserHavePermissionDefer.reject( error );
+            } );
             return doesUserHavePermissionDefer.promise;
         };
-        self.getMembersWithPermission = function (permissionLevel) {
-            for (var list in this.listSecurity) {
-                for (var user in this.siteUsers) {
-                    var hasit = this.doesUserHavePermission(list, user, permissionLevel);
+        self.getMembersWithPermission = function ( permissionLevel )
+        {
+            for ( var list in this.listSecurity )
+            {
+                for ( var user in this.siteUsers )
+                {
+                    var hasit = this.doesUserHavePermission( list, user, permissionLevel );
                 }
             }
         };
-        self.getRoleDefinitionsWithPermission = function (permissionLevel) {
-            var permission = _.find(this.basePermissions, {
+        self.getRoleDefinitionsWithPermission = function ( permissionLevel )
+        {
+            var permission = _.find( this.basePermissions, {
                 name: permissionLevel
-            });
+            } );
             var roledefs = [];
-            _.each(this.roleDefinitions, function (roledef) {
+            _.each( this.roleDefinitions, function ( roledef )
+            {
                 debugger;
-
-                if (roledef.BasePermissions.High && permission.high & roledef.BasePermissions.Low && permission.low) {
-                    roledefs.push(roledef);
+                if ( roledef.BasePermissions.High && permission.high & roledef.BasePermissions.Low && permission.low )
+                {
+                    roledefs.push( roledef );
                 }
-            });
+            } );
         };
-
         // non-deferred versions
-
-        self.GetRoleAssignmentsForUser = function (securableObject, user, groups) {
-
+        self.GetRoleAssignmentsForUser = function ( securableObject, user, groups )
+        {
 
             var selectedRoleAssignments = [];
-            angular.forEach(securableObject.RoleAssignments, function (roleAssignment) {
-                angular.forEach(roleAssignment.Users, function (assignedUserId) {
-                    if (assignedUserId === user.Id) {
-                        selectedRoleAssignments.push(roleAssignment)
+            angular.forEach( securableObject.RoleAssignments, function ( roleAssignment )
+            {
+                angular.forEach( roleAssignment.Users, function ( assignedUserId )
+                {
+                    if ( assignedUserId === user.Id )
+                    {
+                        selectedRoleAssignments.push( roleAssignment )
                     }
-                });
-                angular.forEach(groups, function (group) {
+                } );
+                angular.forEach( groups, function ( group )
+                {
                     // if the user is in the group add the assignment
-                    angular.forEach(group.Users, function (groupUser) {
-                        if (groupUser.Id === user.Id) {
-                            selectedRoleAssignments.push(roleAssignment)
+                    angular.forEach( group.Users, function ( groupUser )
+                    {
+                        if ( groupUser.Id === user.Id )
+                        {
+                            selectedRoleAssignments.push( roleAssignment )
                         }
-                    });
-                });
-                if (roleAssignment.UserId
-                  && user.UserId
-                  && roleAssignment.UserId.NameId
-                  && roleAssignment.UserId.NameIdIssuer
-                  && roleAssignment.UserId.NameId == user.UserId.NameId
-                  && roleAssignment.UserId.NameIdIssuer == user.UserId.NameIdIssuer) {
-                  selectedRoleAssignments.push(roleAssignment)
+                    } );
+                } );
+                if ( roleAssignment.UserId
+                && user.UserId
+                && roleAssignment.UserId.NameId
+                && roleAssignment.UserId.NameIdIssuer
+                && roleAssignment.UserId.NameId == user.UserId.NameId
+                && roleAssignment.UserId.NameIdIssuer == user.UserId.NameIdIssuer )
+                {
+                    selectedRoleAssignments.push( roleAssignment )
                 }
-                  
-
-            });
-
+            } );
             return selectedRoleAssignments;
-
         };
-
-        self.getUserPermissions = function (securableObject, user, roles, siteGroups) {
-
-            var roleAssignments = self.GetRoleAssignmentsForUser(securableObject, user, siteGroups);
+        self.getUserPermissions = function ( securableObject, user, roles, siteGroups )
+        {
+            var roleAssignments = self.GetRoleAssignmentsForUser( securableObject, user, siteGroups );
             var roleDefinitionIds = [];
-            angular.forEach(roleAssignments, function (roleAssignment) {
-                angular.forEach(roleAssignment.RoleDefinitions, function (roleDefinitionStub) {
-                    roleDefinitionIds.push(roleDefinitionStub.Id);
-                });
-            });
-            return self.getBasePermissionsForRoleDefinitiuonIds(roleDefinitionIds, roles);
+            angular.forEach( roleAssignments, function ( roleAssignment )
+            {
+                angular.forEach( roleAssignment.RoleDefinitions, function ( roleDefinitionStub )
+                {
+                    roleDefinitionIds.push( roleDefinitionStub.Id );
+                } );
+            } );
+            return self.getBasePermissionsForRoleDefinitiuonIds( roleDefinitionIds, roles );
         };
-        self.doesUserHavePermission = function (securableObject, user, requestedpermission, roles, siteGroups) {
-            var permissions = self.getUserPermissions(securableObject, user, roles, siteGroups);
-            for (var i = 0; i < permissions.length; i++) {
+        self.doesUserHavePermission = function ( securableObject, user, requestedpermission, roles, siteGroups )
+        {
+            var permissions = self.getUserPermissions( securableObject, user, roles, siteGroups );
+            for ( var i = 0; i < permissions.length; i++ )
+            {
                 if (
-                    (permissions[i].Low & requestedpermission.low === requestedpermission.low)
-                    &&
-                    (permissions[i].High & requestedpermission.high === requestedpermission.high)
-                    ) {
+                ( permissions[i].Low & requestedpermission.low === requestedpermission.low )
+                &&
+                ( permissions[i].High & requestedpermission.high === requestedpermission.high )
+                )
+                {
                     return true;
                 }
             }
-
             return false;
         };
 
-
-      /// <summary>Gets all the base permissions that are included in a set of RoleDefinitions </summary>
-      /// <param name="roleDefs" type="RoleDef">The List of RoleDefinitions to Extract Base permissions from 
-      /// <returns type="Number">an array of BasePermisions</returns>
-
-        self.getBasePermissionsForRoleDefinitiuonIds = function (roleDefinitionIds, roleDefs) {
+        /// <summary>Gets all the base permissions that are included in a set of RoleDefinitions </summary>
+        /// <param name="roleDefs" type="RoleDef">The List of RoleDefinitions to Extract Base permissions from 
+        /// <returns type="Number">an array of BasePermisions</returns>
+        self.getBasePermissionsForRoleDefinitiuonIds = function ( roleDefinitionIds, roleDefs )
+        {
             var basePermissions = [];
-            angular.forEach(roleDefs, function (roleDef) {
-
-                angular.forEach(roleDefinitionIds, function (roleDefinitionId) {
-                    if (roleDef.Id = roleDefinitionId) {
-                        basePermissions.push(roleDef.BasePermissions)
-
+            angular.forEach( roleDefs, function ( roleDef )
+            {
+                angular.forEach( roleDefinitionIds, function ( roleDefinitionId )
+                {
+                    if ( roleDef.Id = roleDefinitionId )
+                    {
+                        basePermissions.push( roleDef.BasePermissions )
                     }
-                });
-            });
+                } );
+            } );
             return basePermissions;
-
 
         };
     }
-
-})();
+} )();
 

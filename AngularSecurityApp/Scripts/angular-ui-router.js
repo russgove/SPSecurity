@@ -1278,7 +1278,8 @@ function $UrlMatcherFactory() {
    * // In a config() block, you can then attach URLs with
    * // type-annotated parameters:
    * $stateProvider.state('users', {
-   *   url: "/users",
+   *   url: "
+",
    *   // ...
    * }).state('users.item', {
    *   url: "/{user:dbObject}",

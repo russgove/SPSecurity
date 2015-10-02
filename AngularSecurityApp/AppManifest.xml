@@ -4,7 +4,7 @@
      Name="AngularSecurityApp"
      ProductID="{68f40c7c-405b-4771-81f0-536c8fab3399}"
      Version="1.0.0.0"
-     SharePointMinVersion="15.0.0.0"
+     SharePointMinVersion="16.0.0.0"
 >
   <Properties>
     <Title>AngularSecurityApp</Title>

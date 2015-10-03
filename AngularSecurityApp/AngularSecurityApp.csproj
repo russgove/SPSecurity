@@ -20,7 +20,7 @@
     <WorkflowPartId>{5cf495db-fe68-4c6a-9525-23ed7765260a}</WorkflowPartId>
     <CspkgPartId>{eca1af15-fec0-47bc-a9ed-16f00c9e646e}</CspkgPartId>
     <SqlPackagePartId>{aeca6309-0089-4966-9109-9385dd16bcea}</SqlPackagePartId>
-    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
+    <MinimumOfficeToolsVersion>12.0</MinimumOfficeToolsVersion>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

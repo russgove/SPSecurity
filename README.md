@@ -8,3 +8,5 @@ The  Project is a SharePoint-Hosted App that prodcuces a Security Report showing
 
 The App incluedes one Angular Service(spSecurityService) that is responsible for retrieving all SharePoint security information from the HostWeb using the REST API. The App requires FullControl over the HostWeb because without that level of trust it cannot access the HostWebs security information(Hopefully this will chnage in the future!)
 
+This app does not yet work wit Active Directory groupss!!!
+

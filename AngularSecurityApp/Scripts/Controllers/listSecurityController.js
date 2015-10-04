@@ -7,6 +7,7 @@
         $scope.loadLists = function () {
                spSecurity.GetListSecurity($scope.showHiddenLists, $scope.selectedBasePermission, $scope.users.selected, $scope.lists.selected).then(function (listSecurity) {
                 $scope.listSecurity = listSecurity;
+                // angular.copy(listSecurity, $scope.listSecurity);
                 $scope.gridOptions.columnDefs = [
               {
                   name: 'Title',
@@ -63,7 +64,7 @@
         $scope.selectedBasePermission = spSecurity.basePermissions.ViewPages;
 
         $scope.lists = lists;
-       
+        $scope.listSecurity = [];
 
         $scope.siteUsers = siteUsers;
         

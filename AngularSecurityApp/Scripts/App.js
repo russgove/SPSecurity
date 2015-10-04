@@ -20,7 +20,10 @@
 
 
   secApp.config(function ($locationProvider) { // this is needed for $location.seartch() to work
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
   });
   secApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/listsecurity');

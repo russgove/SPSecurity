@@ -6,7 +6,8 @@
       
         $scope.loadLists = function () {
                spSecurity.GetListSecurity($scope.showHiddenLists, $scope.selectedBasePermission, $scope.users.selected, $scope.lists.selected).then(function (listSecurity) {
-                $scope.listSecurity = listSecurity;
+                 $scope.listSecurity = listSecurity;
+
                 // angular.copy(listSecurity, $scope.listSecurity);
                 $scope.gridOptions.columnDefs = [
               {
@@ -23,7 +24,7 @@
                         minWidth: 40,
                         maxWidth: 40,
                         headerCellTemplate: slantedColumnHeaderTemplate,
-                       cellTemplate: "<div class='ui-grid-cell-contents'><input type='checkbox' ng-checked='{{COL_FIELD CUSTOM_FILTERS}}' /></div>",
+                       cellTemplate: "<div class='ui-grid-cell-contents'><input type='checkbox' ng-model='COL_FIELD' /></div>",
 
                     });
                 };

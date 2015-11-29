@@ -30,7 +30,18 @@ function () {
       $q.all([userLoaded, listsLoaded, roleDefsLoaded, siteGroupsLoaded]).then(function (promises) {
         var selectedLists = [];
         var users = promises[0];
-        var lists = $filter('filter')(promises[1], { Hidden: showHiddenLists })
+          //  var lists = $filter('filter')(promises[1], { Hidden: showHiddenLists });
+        var lists = $filter('filter')(promises[1], function () {
+            var showHidden = showHiddenLists;
+            return function (list, index, array) {
+                if (list.Hidden) {
+                    return showHidden
+                }
+                else {
+                    return true;
+                };
+            };
+        }());
         var roles = promises[2];
         var siteGroups = promises[3];
         // forachh list, foreachuser, see if the user has security

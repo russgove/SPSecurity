@@ -1,11 +1,12 @@
 ﻿<%@ Page Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" MasterPageFile="~masterurl/default.master" Language="C#" %>
+
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 
 <asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 
-    
+
     <script type="text/javascript" src="../Scripts/lodash.js"></script>
     <script type="text/javascript" src="../Scripts/angular.js"></script>
     <script type="text/javascript" src="../Scripts/angular-sanitize.js"></script>
@@ -22,7 +23,7 @@
     <link rel="Stylesheet" type="text/css" href="../Content/App.css" />
     <link rel="Stylesheet" type="text/css" href="../Scripts/UIGrid/ui-grid.css" />
     <link rel="Stylesheet" type="text/css" href="../Scripts/UI-Select/select.css" />
-     <link rel="stylesheet" type="text/css"  href="../Scripts/UI-Select/select2.css" />
+    <link rel="stylesheet" type="text/css" href="../Scripts/UI-Select/select2.css" />
 
     <!-- Add your JavaScript to the following file -->
     <script type="text/javascript" src="../Scripts/services/spSecurityService.js"></script>
@@ -34,16 +35,20 @@
     <script type="text/javascript" src="../Scripts/Controllers/listroleassignmentsController.js"></script>
     <script type="text/javascript" src="../Scripts/Controllers/webroleassignmentsController.js"></script>
     <script type="text/javascript" src="../Scripts/Controllers/listsecurityController.js"></script>
+    <!-- does  .ui-grid-header-cell-wrapper height need to be height of expandablle grid section? -->
     <style>
         .position-fixed {
-  position: fixed;
-}
-              .myGrid {
- height:400px;
- width:8
-00px;
-}
+            position: fixed;
+        }
 
+        .myGrid {
+            height: 400px;
+            width: 800px;
+        }
+         .ui-grid-header-cell-wrapper {
+            height: 400px;
+            width: 800px;
+        }
     </style>
 </asp:Content>
 
@@ -60,7 +65,7 @@
     <div data-ng-app="secApp">
         <a ng-href="{{appWebUrl}}">reload</a>
         <ul class="spsec-navbar">
-            <li class="spsec-navbarlink" ><a ui-sref="home">Home</a></li>
+            <li class="spsec-navbarlink"><a ui-sref="home">Home</a></li>
             <li class="spsec-navbarlink"><a ui-sref="siteusers">Site Users</a></li>
             <li class="spsec-navbarlink"><a ui-sref="sitegroups">Site Groups</a></li>
             <li class="spsec-navbarlink"><a ui-sref="roledefinitions">Role Definitions</a></li>

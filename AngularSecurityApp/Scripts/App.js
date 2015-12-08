@@ -10,7 +10,7 @@
   hostweburl = decodeURIComponent(hostweburl);
   appweburl = decodeURIComponent(appweburl);
 
-  var secApp = angular.module("secApp", ["spSecurity", 'ui.router', "ngSanitize", "ui.select", 'ui.grid', 'ui.grid.pinning', 'ui.grid.expandable', 'ngContextMenu']);
+  var secApp = angular.module("secApp", ["spSecurity", 'ui.router', "ngSanitize", "ui.select", 'ui.grid', 'ui.grid.pinning', 'ui.grid.treeView' , 'ngContextMenu']);
   secApp.filter('RoleAssignmentsFilter', function () {
     return function (input) {
 

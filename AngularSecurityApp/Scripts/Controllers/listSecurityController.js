@@ -1,30 +1,38 @@
 ﻿
 (function () {
-    angular.module("secApp").controller("listsecurityController", function ($scope, siteUsers,spSecurity,lists) {
+    angular.module("secApp").controller("listsecurityController", function ($scope, siteUsers, spSecurity, lists, uiGridTreeViewConstants) {
 
-        var slantedColumnHeaderTemplate = "<div class=\"rotate\" col-index=\"renderIndex\">{{ col.displayName CUSTOM_FILTERS }} </div>";
-      
+        var slantedColumnHeaderTemplate = "<div style='width:40px;' class=\"rotate\" col-index=\"renderIndex\">{{ col.displayName CUSTOM_FILTERS }} </div>";
+
         $scope.loadLists = function () {
-               spSecurity.GetListSecurity($scope.showHiddenLists, $scope.selectedBasePermission, $scope.users.selected, $scope.lists.selected).then(function (listSecurity) {
-                 $scope.listSecurity = listSecurity;
+            spSecurity.GetListSecurity($scope.showHiddenLists, $scope.selectedBasePermission, $scope.users.selected, $scope.lists.selected).then(function (listSecurity) {
+                // libraries are at leve 0 and folder have not been loaded
+                for (var idx = 0; idx < listSecurity.length; idx++) {
+                    listSecurity[idx].$$treeLevel = 0;
+                    listSecurity[idx].nodeLoaded = false;
+
+                }
+                $scope.listSecurity = listSecurity;
 
                 // angular.copy(listSecurity, $scope.listSecurity);
                 $scope.gridOptions.columnDefs = [
               {
                   name: 'Title',
                   field: 'Title',
-                  width:"100"
+                  width: 100,
+                  headerCellTemplate: slantedColumnHeaderTemplate,
               }
                 ];
-        
+
                 for (var userName in listSecurity[0].users) {
                     $scope.gridOptions.columnDefs.push({
                         name: userName,
                         field: "users['" + userName + "']",
-                        minWidth: 40,
-                        maxWidth: 40,
+                        width: 40,
+
+
                         headerCellTemplate: slantedColumnHeaderTemplate,
-                       cellTemplate: "<div class='ui-grid-cell-contents'><input type='checkbox' ng-model='COL_FIELD' /></div>",
+                        cellTemplate: "<div class='ui-grid-cell-contents'><input type='checkbox' ng-model='COL_FIELD' /></div>",
 
                     });
                 };
@@ -40,27 +48,33 @@
               }
             ],
             data: 'listSecurity',
-            expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:140px;"></div>',// need this
-            expandableRowHeight: 150,
+            // expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:140px;"></div>',// need this
+            // expandableRowHeight: 150,
+            showTreeExpandNoChildren: true,
             headerRowHeight: 139
         };
         $scope.gridOptions.onRegisterApi = function (gridApi) {
             $scope.gridApi = gridApi;
-            gridApi.expandable.on.rowExpandedStateChanged($scope, function (row) {
-                if (!row.entity.subGridOprions) {
-                
-                    row.entity.subGridOptions = {
-                             columnDefs: [ {name:"Id", field:"id"},{name:"Name", field:"name"} ],
-                                data: row
-                       }
+            $scope.gridApi.treeBase.on.rowExpanded($scope, function (row) {
+                if (!row.entity.nodeLoaded) {
+                    // get the subfolders and splic them into the array
+                    spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(function (folderSecurity) {
 
+                    });
+            
+                 //   $interval(function () {z  `   
+                 //       $scope.gridOptions.data.splice(51, 0,
+                 //          { name: 'Dynamic 1', gender: 'female', age: 53, company: 'Griddable grids', balance: 38000, $$treeLevel: 1 },
+                 //    { name: 'Dynamic 2', gender: 'male', age: 18, company: 'Griddable grids', balance: 29000, $$treeLevel: 1 }
+                 //);
+                 //       $scope.nodeLoaded = true;
+                 //   }, 2000, 1);
                 }
-                debugger;
-            });
+            })
 
 
         };
-      
+
         $scope.basePermissions = spSecurity.basePermissions;
         $scope.selectedBasePermission = spSecurity.basePermissions.ViewPages;
 
@@ -68,7 +82,7 @@
         $scope.listSecurity = [];
 
         $scope.siteUsers = siteUsers;
-        
+
         $scope.users = {};// for use in ui.select
 
 

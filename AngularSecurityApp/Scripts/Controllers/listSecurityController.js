@@ -58,21 +58,20 @@
             $scope.gridApi.treeBase.on.rowExpanded($scope, function (row) {
                 if (!row.entity.nodeLoaded) {
                     // get the subfolders and splic them into the array
-                    spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(function (folderSecurity) {
+                    spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(
+                        function (folderSecurity) {
+                            var location = $scope.listSecurity.indexOf(row.entity);
+                            $scope.listSecurity.splice(location, 0, { name: 'Dynamic 1', gender: 'female', age: 53, company: 'Griddable grids', balance: 38000, $$treeLevel: 1 },
+                         { name: 'Dynamic 2', gender: 'male', age: 18, company: 'Griddable grids', balance: 29000, $$treeLevel: 1 });
+                            row.entity.nodeLoaded = true;
+                        }
 
-                    });
-            
-                 //   $interval(function () {z  `   
-                 //       $scope.gridOptions.data.splice(51, 0,
-                 //          { name: 'Dynamic 1', gender: 'female', age: 53, company: 'Griddable grids', balance: 38000, $$treeLevel: 1 },
-                 //    { name: 'Dynamic 2', gender: 'male', age: 18, company: 'Griddable grids', balance: 29000, $$treeLevel: 1 }
-                 //);
-                 //       $scope.nodeLoaded = true;
-                 //   }, 2000, 1);
+                   )
                 }
-            })
+            }
 
 
+            )
         };
 
         $scope.basePermissions = spSecurity.basePermissions;

@@ -61,8 +61,15 @@
                     spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(
                         function (folderSecurity) {
                             var location = $scope.listSecurity.indexOf(row.entity);
-                            $scope.listSecurity.splice(location, 0, { name: 'Dynamic 1', gender: 'female', age: 53, company: 'Griddable grids', balance: 38000, $$treeLevel: 1 },
-                         { name: 'Dynamic 2', gender: 'male', age: 18, company: 'Griddable grids', balance: 29000, $$treeLevel: 1 });
+                            for (var idx = 0 ; idx < folderSecurity.length; idx++) {
+                                var newNode = folderSecurity[idx];
+                                newNode.$$treeLevel = 1;
+                                newNode.Hidden = false;
+                                newNode.nodeLoaded = false;
+                                $scope.listSecurity.splice(location, 0, newNode);
+                            }
+                            
+                           
                             row.entity.nodeLoaded = true;
                         }
 

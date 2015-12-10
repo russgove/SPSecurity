@@ -145,7 +145,7 @@ function () {
 
             //  var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');
 
-            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/items?$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
+            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/items?$expand=ContentType,Folder,File,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
 
 
             self.listroleAssignmentsLoaded = $q.defer();
@@ -153,13 +153,21 @@ function () {
                 .success(function (data) {
                     var tempFolders = [];
                     angular.forEach(data.d.results, function (folderObject, key) {
+                        //TODO: how to determin folder, file, docset, check content type?
                         var list;
                         var folder = {
-                            Title: folderObject.Title,
-                            Id: folderObject.Id,
+                               Id: folderObject.Id,
 
                             RoleAssignments: []
                         };
+                        if (folderObject.ContentType.Name=="Folder") {
+                            folder.Title = folderObject.Folder.Name;
+                        }
+                        else {
+                            folder.Title = folderObject.File.Name;
+                        }
+
+                       
                         angular.forEach(folderObject.RoleAssignments.results, (function (roleAssignmentObject, key) {
                             var roleAssignment;
                             roleAssignment = {

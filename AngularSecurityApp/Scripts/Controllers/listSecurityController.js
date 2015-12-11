@@ -57,10 +57,10 @@
             $scope.gridApi = gridApi;
             $scope.gridApi.treeBase.on.rowExpanded($scope, function (row) {
                 if (!row.entity.nodeLoaded) {
-                    // get the subfolders and splic them into the array
+                    // get the subfolders and splice them into the array
                     spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(
                         function (folderSecurity) {
-                            var location = $scope.listSecurity.indexOf(row.entity);
+                            var location = $scope.listSecurity.indexOf(row.entity)+1;
                             for (var idx = 0 ; idx < folderSecurity.length; idx++) {
                                 var newNode = folderSecurity[idx];
                                 newNode.$$treeLevel = 1;

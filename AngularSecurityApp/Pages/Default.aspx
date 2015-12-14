@@ -16,8 +16,10 @@
     <script type="text/javascript" src="../Scripts/angular-ui-router.js"></script>
     <script type="text/javascript" src="../Scripts/UIGrid/ui-grid.js"></script>
 
+
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>
+   <script type="text/javascript" src="/_layouts/15/sp.requestexecutor.js"></script><!-- needed for JSOM -->
 
     <!-- Add your CSS styles to the following file -->
     <link rel="Stylesheet" type="text/css" href="../Content/App.css" />

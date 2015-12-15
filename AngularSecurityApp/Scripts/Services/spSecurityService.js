@@ -169,15 +169,15 @@ function () {
            };
 
 
-            self.listroleAssignmentsLoaded = $q.defer();
+           self.listroleAssignmentsLoaded = $q.defer();
+           var rd = document.getElementById("__REQUESTDIGEST");
             $http.post(url, JSON.stringify(queryPayload),
                 {
                     headers:
                       {
                           "Accept": "application/json; odata=verbose",
                           "Content-Type": "application/json; odata=verbose",
-                          "X-RequestDigest": formDigest  how to get
-
+                          "X-RequestDigest": rd.value
                       }
                 })
                 .success(function (data) {

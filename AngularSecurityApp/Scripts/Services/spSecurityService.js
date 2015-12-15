@@ -142,7 +142,7 @@ function () {
         };
         self.loadRootFolderRoleAssigmentsDefinitionsMembers = function (list, forceReload) {
           
-
+            /// CHANGED AT WORK!
             //if (self.listroleAssignmentsLoaded && !forceReload) return self.listroleAssignmentsLoaded.promise;
 
             //  var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');

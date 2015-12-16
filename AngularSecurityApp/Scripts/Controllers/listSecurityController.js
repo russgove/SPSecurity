@@ -58,20 +58,26 @@
             $scope.gridApi.treeBase.on.rowExpanded($scope, function (row) {
                 if (!row.entity.nodeLoaded) {
                     // get the subfolders and splice them into the array
-                    spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, row.entity).then(
-                        function (folderSecurity) {
-                            var location = $scope.listSecurity.indexOf(row.entity)+1;
-                            for (var idx = 0 ; idx < folderSecurity.length; idx++) {
-                                var newNode = folderSecurity[idx];
-                                newNode.$$treeLevel = 1;
-                                newNode.Hidden = false;
-                                newNode.nodeLoaded = false;
-                                $scope.listSecurity.splice(location, 0, newNode);
-                            }
-                            
-                           
-                            row.entity.nodeLoaded = true;
+                    if (row.entity.IsList) {
+                        listTitle = row.entity.Title;
+                    }
+                    else {
+                        listTitle = row.entity.listTitle;
+                    }
+
+                    spSecurity.GetFolderSecurity($scope.selectedBasePermission, $scope.users.selected, listTitle, row.entity.ServerRelativeUrl).then(function (folderSecurity) {
+                        var location = $scope.listSecurity.indexOf(row.entity) + 1;
+                        for (var idx = 0 ; idx < folderSecurity.length; idx++) {
+                            var newNode = folderSecurity[idx];
+                            newNode.$$treeLevel = row.treeLevel+1;
+                            newNode.Hidden = false;
+                            newNode.nodeLoaded = false;
+                            $scope.listSecurity.splice(location, 0, newNode);
                         }
+
+
+                        row.entity.nodeLoaded = true;
+                    }
 
                    )
                 }

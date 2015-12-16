@@ -92,9 +92,9 @@ function () {
             });
             return listSecurityLoaded.promise;
         };
-        self.GetFolderSecurity = function (basePermission, requestedUserIds, list) {
+        self.GetFolderSecurity = function (basePermission, requestedUserIds, listTitle, folderServerRelativeUrl) {
             var folderSecurityLoaded = $q.defer();
-            var foldersLoaded = this.loadRootFolderRoleAssigmentsDefinitionsMembers(list);
+            var foldersLoaded = this.loadFolderRoleAssigmentsDefinitionsMembers(listTitle,folderServerRelativeUrl);
             var roleDefsLoaded = this.loadWebRoleDefinitions();
             var userLoaded = this.loadSiteUsers();
             var siteGroupsLoaded = this.loadSiteGroups();
@@ -108,8 +108,6 @@ function () {
 
                 for (var folderIdx = 0; folderIdx < folders.length; folderIdx++) {
                     var folder = folders[folderIdx];
-                    // see if the list is selected
-
                     folder.users = [];
                     // see if the user is elected
                     for (var usersIdx = 0; usersIdx < users.length; usersIdx++) {
@@ -128,7 +126,7 @@ function () {
                         }
                         if (userSelected) {
                             // the user and list are slected, see if the user has the permission
-                            var hasPermission = self.doesUserHavePermission(list, user, basePermission, roles, siteGroups);
+                            var hasPermission = self.doesUserHavePermission(folder, user, basePermission, roles, siteGroups);
                             folder.users[user.Title] = hasPermission;
 
                         };
@@ -140,39 +138,36 @@ function () {
             });
             return folderSecurityLoaded.promise;
         };
-        self.loadRootFolderRoleAssigmentsDefinitionsMembers = function (list, forceReload) {
+        self.loadFolderRoleAssigmentsDefinitionsMembers = function (listTitle,folderServerRelativeUrl, forceReload) {
+
           
-            /// CHANGED AT WORK!
             //if (self.listroleAssignmentsLoaded && !forceReload) return self.listroleAssignmentsLoaded.promise;
-
-            //  var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');
-            var folderIdToGet = list.RootFolder.UniqueId;
-           var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
-           // var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems");
-
-           var caml="<View>"+
-                       " <Query>"+
-                            "<Where>"+
-                             "   <Eq>"+
-                              "      <FieldRef Name='FileDirRef'/>"+
-                               "     <Value Type='Lookup'>"+
-                               list.RootFolder.ServerRelativeUrl+
-                                "    </Value>"+
-                               " </Eq>" +
-                           " </Where>"+
-                      "  </Query>" +
-                       // <RowLimit Paged='TRUE'> 30 </RowLimit>
-                   " </View>";
-           var queryPayload = {
-               'query': {
-                   '__metadata': { 'type': 'SP.CamlQuery' },
-                   'ViewXml': caml
-               }
-           };
-
-
-           self.listroleAssignmentsLoaded = $q.defer();
-           var rd = document.getElementById("__REQUESTDIGEST");
+            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + listTitle + "')/getitems?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
+            var caml = "<View Scope='RecursiveAll'>" +
+                        " <Query>" +
+                             "<Where>" +
+                              "   <Eq>" +
+                               "      <FieldRef Name='FileDirRef'/>" +
+                                "     <Value Type='Lookup'>" +
+                                folderServerRelativeUrl +
+                                 "    </Value>" +
+                                " </Eq>" +
+                            " </Where>" +
+                       "  </Query>" +
+    //               "     <QueryOptions>"+
+    //    "<ViewAttributes Scope='RecursiveAll' />" +
+    //    "<OptimizeFor>FolderUrls</OptimizeFor>"+
+        
+    //"</QueryOptions>"+
+                    " </View>";
+            var queryPayload = {
+                'query': {
+                    '__metadata': { 'type': 'SP.CamlQuery' },
+                    'ViewXml': caml
+                }
+            };
+            var folderLoaded = $q.defer();
+            var rd = document.getElementById("__REQUESTDIGEST");
             $http.post(url, JSON.stringify(queryPayload),
                 {
                     headers:
@@ -183,24 +178,22 @@ function () {
                       }
                 })
                 .success(function (data) {
-                    var tempFolders = [];
-                    angular.forEach(data.d.results, function (folderObject, key) {
-                        //TODO: how to determin folder, file, docset, check content type?
-                        var list;
-                        var folder = {
-                               Id: folderObject.Id,
-
+                    var itemsToAdd = []; 
+                    angular.forEach(data.d.results, function (listItem, key) {
+                         var itemToAdd = {
+                             Id: listItem.Id,
+                             listTitle:listTitle,
                             RoleAssignments: []
                         };
-                        if (folderObject.ContentType.Name=="Folder") {
-                            folder.Title = folderObject.Folder.Name;
+                        if (listItem.ContentType.Name == "Folder") {
+                            itemToAdd.Title = listItem.Folder.Name;
+                            itemToAdd.ServerRelativeUrl = listItem.Folder.ServerRelativeUrl;
                         }
                         else {
-                            folder.Title = folderObject.File.Name;
+                            itemToAdd.Title = listItem.File.Name;
+                            itemToAdd.ServerRelativeUrl = listItem.File.ServerRelativeUrl;
                         }
-
-                       
-                        angular.forEach(folderObject.RoleAssignments.results, (function (roleAssignmentObject, key) {
+                        angular.forEach(listItem.RoleAssignments.results, (function (roleAssignmentObject, key) {
                             var roleAssignment;
                             roleAssignment = {
                                 RoleDefinitions: [],
@@ -228,18 +221,18 @@ function () {
                                 };
                                 roleAssignment.RoleDefinitions.push(roleDefinition);
                             });
-                            folder.RoleAssignments.push(roleAssignment);
+                            itemToAdd.RoleAssignments.push(roleAssignment);
                         }));
-                        tempFolders.push(folder);
+                        itemsToAdd.push(itemToAdd);
                     });
-                    list.items = tempFolders;// put this on the parent, not self
-                    self.listroleAssignmentsLoaded.resolve(tempFolders);
+                    
+                    folderLoaded.resolve(itemsToAdd);
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     debugger;
-                    self.listroleAssignmentsLoaded.reject(textStatus);
+                    folderLoaded.reject(textStatus);
                 });
-            return self.listroleAssignmentsLoaded.promise;
+            return folderLoaded.promise;
 
 
 
@@ -594,7 +587,8 @@ function () {
                             Title: listObject.Title,
                             Id: listObject.Id,
                             Hidden: listObject.Hidden,
-                            RootFolder: listObject.RootFolder, // don't really need everything in here, can tune it later
+                            ServerRelativeUrl: listObject.RootFolder.ServerRelativeUrl,
+                            IsList:true, // to differeentiate foldes from lists
                             RoleAssignments: []
                         };
                         angular.forEach(listObject.RoleAssignments.results, (function (roleAssignmentObject, key) {

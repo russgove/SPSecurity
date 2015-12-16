@@ -147,17 +147,19 @@ function () {
 
             //  var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');
             var folderIdToGet = list.RootFolder.UniqueId;
-            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/items?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
-           var caml="<View Scope='Recursive'>"+
+            //var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
+            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems");
+
+           var caml="<View>"+
                        " <Query>"+
-                            "<Where>"+
-                             "   <eq>"+
-                              "      <FieldRef Name='FileDirRef'/>"+
-                               "     <Value Type='Text'>"+
-                               list.RootFolder.ServerRelativeUrl+
-                                "    </Value>"+
-                               " </eq>"+
-                           " </Where>"+
+                           // "<Where>"+
+                           //  "   <eq>"+
+                           //   "      <FieldRef Name='FileDirRef'/>"+
+                           //    "     <Value Type='Text'>"+
+                           //    list.RootFolder.ServerRelativeUrl+
+                           //     "    </Value>"+
+                           //    " </eq>"+
+                           //" </Where>"+
                       "  </Query>" +
                        // <RowLimit Paged='TRUE'> 30 </RowLimit>
                    " </View>";

@@ -147,19 +147,19 @@ function () {
 
             //  var url = this.getHostApiUrl('Web/Lists?&$expand=RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId');
             var folderIdToGet = list.RootFolder.UniqueId;
-            //var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
-            var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems");
+           var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems?$expand=ContentType,Folder,Folder/ParentFolder,File,File/ParentFolder,RoleAssignments,RoleAssignments/RoleDefinitionBindings,RoleAssignments/Member,RoleAssignments/Member/Users,RoleAssignments/Member/Groups,RoleAssignments/Member/UserId");
+           // var url = this.getHostApiUrl("Web/Lists/GetByTitle('" + list.Title + "')/getitems");
 
            var caml="<View>"+
                        " <Query>"+
-                           // "<Where>"+
-                           //  "   <eq>"+
-                           //   "      <FieldRef Name='FileDirRef'/>"+
-                           //    "     <Value Type='Text'>"+
-                           //    list.RootFolder.ServerRelativeUrl+
-                           //     "    </Value>"+
-                           //    " </eq>"+
-                           //" </Where>"+
+                            "<Where>"+
+                             "   <Eq>"+
+                              "      <FieldRef Name='FileDirRef'/>"+
+                               "     <Value Type='Lookup'>"+
+                               list.RootFolder.ServerRelativeUrl+
+                                "    </Value>"+
+                               " </Eq>" +
+                           " </Where>"+
                       "  </Query>" +
                        // <RowLimit Paged='TRUE'> 30 </RowLimit>
                    " </View>";

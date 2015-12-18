@@ -659,41 +659,7 @@ function () {
             return loadListNamesDefered.promise;
         }
 
-        //self.getRoleDefinitionById = function (roleDefinitionId) {
-        //    var gotRoleDef = $q.defer();
-        //    self.loadWebRoleDefinitions().then(function (roleDefs) {
-        //        angular.forEach(roleDefs, function (roleDef) {
-        //            if (roleDef.Id = roleDefinitionId) {
-        //                gotRoleDef.resolve(roleDef);
-        //            }
-        //        });
-        //        $log.error("A role Definition with ID " + roleDefinitionId + " Was not foundin the Web");
-        //        gotRoleDef.reject();
-
-   
-   
-        //self.getMembersWithPermission = function (permissionLevel) {
-        //    for (var list in this.listSecurity) {
-        //        for (var user in this.siteUsers) {
-        //            var hasit = this.doesUserHavePermission(list, user, permissionLevel);
-        //        }
-        //    }
-        //};
-        //self.getRoleDefinitionsWithPermission = function (permissionLevel) {
-        //    var permission = _.find(this.basePermissions, {
-        //        name: permissionLevel
-        //    });
-        //    var roledefs = [];
-        //    _.each(this.roleDefinitions, function (roledef) {
-        //        debugger;
-
-        //        if (roledef.BasePermissions.High && permission.high & roledef.BasePermissions.Low && permission.low) {
-        //            roledefs.push(roledef);
-        //        }
-        //    });
-        //};
-
-        // non-deferred versions
+     
 
         self.GetRoleAssignmentsForUser = function (securableObject, user, groups) {
 
@@ -725,6 +691,7 @@ function () {
 
             });
 
+
             return selectedRoleAssignments;
 
         };
@@ -743,6 +710,7 @@ function () {
                     roleDefinitionIds.push(roleAssignments[rax].RoleDefinitions[rdx].Id);
                 }
             }
+
           
             return self.getBasePermissionsForRoleDefinitiuonIds(roleDefinitionIds, roles);
         };

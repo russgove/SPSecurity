@@ -18,6 +18,8 @@
     <script type="text/javascript" src="../Scripts/ng-ContextMenu.js"></script>
     <script type="text/javascript" src="../Scripts/angular-ui-router.js"></script>
     <script type="text/javascript" src="../Scripts/UIGrid/ui-grid.js"></script>
+        <script type="text/javascript" src="/_layouts/15/init.js"></script>
+  
       <script type="text/javascript" src="/_layouts/15/MicrosoftAjax.js"></script>
    
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>

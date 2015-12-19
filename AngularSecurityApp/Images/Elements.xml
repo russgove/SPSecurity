@@ -4,5 +4,12 @@
     <File Path="Images\AppIcon.png" Url="Images/AppIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\clip_image001_thumb.png" Url="Images/clip_image001_thumb.png" ReplaceContent="TRUE" />
     <File Path="Images\SPSec.PNG" Url="Images/SPSec.PNG" ReplaceContent="TRUE" />
+    <File Path="Images\emptyFolder.gif" Url="Images/emptyFolder.gif" ReplaceContent="TRUE" />
+    <File Path="Images\Folder.GIF" Url="Images/Folder.GIF" ReplaceContent="TRUE" />
+    <File Path="Images\OpenFolder.GIF" Url="Images/OpenFolder.GIF" ReplaceContent="TRUE" />
+    <File Path="Images\libraryclosed.png" Url="Images/libraryclosed.png" ReplaceContent="TRUE" />
+    <File Path="Images\libraryOpen.gif" Url="Images/libraryOpen.gif" ReplaceContent="TRUE" />
+    <File Path="Images\file.gif" Url="Images/file.gif" ReplaceContent="TRUE" />
+    <File Path="Images\libraryempty.png" Url="Images/libraryempty.png" ReplaceContent="TRUE" />
   </Module>
 </Elements>

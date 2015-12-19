@@ -182,7 +182,9 @@ function () {
                     angular.forEach(data.d.results, function (listItem, key) {
                          var itemToAdd = {
                              Id: listItem.Id,
-                             listTitle:listTitle,
+                             listTitle: listTitle,
+                             type: listItem.ContentType.Name,
+                             itemCount:listItem.Folder.ItemCount,
                             RoleAssignments: []
                         };
                         if (listItem.ContentType.Name == "Folder") {
@@ -589,8 +591,9 @@ function () {
                             Id: listObject.Id,
                             Hidden: listObject.Hidden,
                             ServerRelativeUrl: listObject.RootFolder.ServerRelativeUrl,
-                            IsList:true, // to differeentiate foldes from lists
-                            RoleAssignments: []
+                            type: "List",// to differeentiate foldes from lists
+                            itemCount: listObject.ItemCount,
+                                                        RoleAssignments: []
                         };
                         angular.forEach(listObject.RoleAssignments.results, (function (roleAssignmentObject, key) {
                             var roleAssignment;

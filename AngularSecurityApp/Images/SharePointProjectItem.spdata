@@ -5,5 +5,12 @@
     <ProjectItemFile Source="AppIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="clip_image001_thumb.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="SPSec.PNG" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="emptyFolder.gif" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="Folder.GIF" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="OpenFolder.GIF" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="libraryclosed.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="libraryOpen.gif" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="file.gif" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="libraryempty.png" Target="Images\" Type="ElementFile" />
   </Files>
 </ProjectItem>

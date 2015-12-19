@@ -16,11 +16,13 @@
     <script type="text/javascript" src="../Scripts/angular-ui-router.js"></script>
     <script type="text/javascript" src="../Scripts/UIGrid/ui-grid.js"></script>
 
- <script type="text/javascript" src="/_layouts/15/init.js"></script><!-- needed for update form digest-->
-   
+    <script type="text/javascript" src="/_layouts/15/init.js"></script>
+    <!-- needed for update form digest-->
+
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>
-   <script type="text/javascript" src="/_layouts/15/sp.requestexecutor.js"></script><!-- needed for JSOM (not needed now)-->
+    <script type="text/javascript" src="/_layouts/15/sp.requestexecutor.js"></script>
+    <!-- needed for JSOM (not needed now)-->
 
     <!-- Add your CSS styles to the following file -->
     <link rel="Stylesheet" type="text/css" href="../Content/App.css" />
@@ -39,7 +41,34 @@
     <script type="text/javascript" src="../Scripts/Controllers/webroleassignmentsController.js"></script>
     <script type="text/javascript" src="../Scripts/Controllers/listsecurityController.js"></script>
     <!-- does  .ui-grid-header-cell-wrapper height need to be height of expandablle grid section? -->
+
+    
     <style>
+        .ui-grid-icon-emptyfolder:before {
+            content: url('../images/emptyFolder.gif');
+        }
+
+        .ui-grid-icon-folder:before {
+            content: url('../images/folder.gif');
+        }
+
+        .ui-grid-icon-openfolder:before {
+            content: url('../images/openFolder.gif');
+        }
+
+        .ui-grid-icon-openlibrary:before {
+            content: url('../images/libraryOpen.gif');
+        }
+
+         .ui-grid-icon-emptylibrary:before {
+            content: url('../images/libraryempty.png');
+        }
+        .ui-grid-icon-library:before {
+            content: url('../images/libraryclosed.png');
+        }
+         .ui-grid-icon-file:before {
+            content: url('../images/file.gif');
+        }
         .position-fixed {
             position: fixed;
         }
@@ -48,7 +77,8 @@
             height: 400px;
             width: 800px;
         }
-         .ui-grid-header-cell-wrapper {
+
+        .ui-grid-header-cell-wrapper {
             height: 400px;
             width: 800px;
         }

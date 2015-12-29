@@ -517,6 +517,28 @@ function () {
             self.siteUsersLoaded = $q.defer();
             $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
                 .success(function (data) {
+
+                    ///test if its a group call ensureuer on all members
+                    for (var i = 0; i < data.d.results.length; i++) {
+                        if (data.d.results[i].PrincipalType == 4) {
+
+                            var groupName = data.d.results.Title;// the group name
+                            url = "https://graph.windows.net/xxxxxxx/groups?1.5";
+                            self.siteGroupsLoaded = $q.defer();
+                            $http.get(url, { headers: { "Accept": "application/json; odata=verbose" } })
+                               .success(function (data) {
+                                   var tempGroups;
+                               })
+                                 .error(function (jqXHR, textStatus, errorThrown) {
+                                     debugger;
+                                     self.siteUsersLoaded.reject(textStatus);
+                                 });
+
+
+                        }
+                    }
+                    ///test
+
                     self.siteUsers = data.d.results;
                     self.siteUsersLoaded.resolve(self.siteUsers);
                 })
